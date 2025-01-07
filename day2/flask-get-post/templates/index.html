@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask GET & POST 테스트</title>
+</head>
+<body>
+    <h1>안녕하세요! Flask GET & POST 테스트 서버입니다. 🛠️</h1>
+    <p>아래에 이름을 입력하고 "보내기" 버튼을 눌러보세요!</p>
+    <form action="/greet" method="POST">
+        <label for="name">이름: </label>
+        <input type="text" id="name" name="name" required>
+        <button type="submit">보내기 🚀</button>
+    </form>
+</body>
+</html>
