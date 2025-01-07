@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>실시간 채팅</title>
+    <!-- Socket.IO 클라이언트 라이브러리 로드 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <style>
+        /* 채팅 메시지 영역 스타일 */
+        #messages { 
+            height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h2>채팅방</h2>
+    <!-- 채팅 메시지 표시 영역 -->
+    <div id="messages">
+        {% for msg in messages %}
+            <p><strong>{{ msg.user }}:</strong> {{ msg.message }}</p>
+        {% endfor %}
+    </div>
+    
+    <!-- 메시지 입력 폼 -->
+    <input type="text" id="message" placeholder="메시지 입력" 
+           onkeypress="if(event.keyCode==13) sendMessage()">
+    <button onclick="sendMessage()">전송</button>
+    
+    <script>
+        // Socket.IO 연결 설정
+        var socket = io();
+        
+        // 서버로부터 메시지 수신 시 처리
+        socket.on('message', function(data) {
+            var messages = document.getElementById('messages');
+            // 새 메시지를 화면에 추가
+            messages.innerHTML += '<p><strong>' + data.user + ':</strong> ' + data.message + '</p>';
+            // 스크롤을 최신 메시지 위치로 이동
+            messages.scrollTop = messages.scrollHeight;
+        });
+        
+        // 메시지 전송 함수
+        function sendMessage() {
+            var message = document.getElementById('message');
+            if(message.value) {
+                // 메시지를 서버로 전송
+                socket.emit('message', {message: message.value});
+                // 입력 필드 초기화
+                message.value = '';
+            }
+        }
+    </script>
+</body>
+</html>
